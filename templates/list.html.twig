@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ClubController!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
+
+
+		<p>Le nombre de formations : {{listes|length }}</p>
+
+
+		{% if listes is empty and defined  %}
+			Le tableau est vide
+		{% else %}
+
+			<table>
+				<tr>
+					<th>ref</th>
+					<th>titre</th>
+					<th>description</th>
+					<th>datedebut</th>
+					<th>datefin</th>
+					<th>Nombre participants</th>
+				</tr>
+				{% for i in listes %}
+
+					<tr>
+						<td>{{i.ref}}</td>
+						<td>{{i.Titre|upper}}</td>
+						<td>{{i.Description}}</td>
+						<td>{{i.date_debut}}</td>
+						<td>{{i.date_fin}}</td>
+						<td>
+                       {% if (i.nb_participants != 0) %}
+                        {{i.nb_participants}} 
+                        {% else %}
+                        <button type="button">  <a href="{{path('get_name',{'nom':i.Titre})}}">Participer</a> </button>
+                        {% endif %}
+                        </td>
+                       
+					</tr>
+
+				{% endfor %}
+			</table>
+
+		{% endif %}
+
+
+		<p>------------------------------------</p>
+
+       
+		<p>Les titres des formations théoriques :
+
+			{% for i in listes %}
+				{% if i.Description == 'formation
+            theorique' %}
+					<p>*{{i.Titre|upper}}</p>
+				{%  endif %}
+			{% endfor %}
+		</p>
+
+
+		<p>
+			Le titre de la formation ayant le plus grand nombre de participants:
+
+			{% set maxParticipants = 0 %}
+			{% set maxTitle = "" %}
+			{% for i in listes %}
+				{% if i.nb_participants > maxParticipants %}
+					{% set maxParticipants = i.nb_participants %}
+					{% set maxTitle = i.Titre %}
+				{% endif %}
+			{% endfor %}
+			{{maxTitle}}
+		</p>
+
+
+		<p>
+			Le nombre total de participants dans toutes les formations
+
+			{% set nbreallParticipants = 0 %}
+
+			{% for i in listes %}
+				{% set nbreallParticipants = i.nb_participants + nbreallParticipants %}
+			{% endfor %}
+
+			{{nbreallParticipants}}
+		</p>
+
+	</div>
+{% endblock %}

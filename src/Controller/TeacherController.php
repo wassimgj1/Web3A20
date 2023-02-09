@@ -12,7 +12,7 @@ class TeacherController extends AbstractController
     #[Route('/teacher', name: 'app_teacher')]
     public function index(): Response
     {
-        return $this->render('teacher/index.html.twig', [
+        return $this->render('teacher/showTeacher.html.twig', [
             'controller_name' => 'TeacherController',
         ]);
     }
